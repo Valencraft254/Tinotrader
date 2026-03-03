@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TinoTrader</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #0d0d0d;
+    color: white;
+}
+
+header {
+    padding: 20px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.container {
+    padding: 80px 20px;
+    max-width: 900px;
+    margin: auto;
+}
+
+h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+p {
+    font-size: 18px;
+    color: #b3b3b3;
+    line-height: 1.6;
+}
+
+#tabla {
+    margin-top: 50px;
+    background: #1a1a1a;
+    padding: 25px;
+    border-radius: 12px;
+}
+
+.fila {
+    padding: 12px 0;
+    border-bottom: 1px solid #333;
+}
+
+.fila:last-child {
+    border-bottom: none;
+}
+
+.menu-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.sidebar {
+    position: fixed;
+    right: -250px;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background: #111;
+    padding-top: 80px;
+    transition: 0.3s;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+}
+
+.sidebar a {
+    display: block;
+    padding: 15px 25px;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.sidebar a:hover {
+    background: #222;
+}
+
+.sidebar.active {
+    right: 0;
+}
+</style>
+</head>
+<body>
+
+<div class="menu-btn" onclick="toggleMenu()">☰</div>
+
+<div class="sidebar" id="sidebar">
+    <a href="TU_LINK_DE_TWITTER" target="_blank">Twitter</a>
+</div>
+
+<header>
+TinoTrader
+</header>
+
+<div class="container">
+    <h1>Hola, soy TinoTrader</h1>
+    <p>
+        Me dedico a la inversión y al análisis de la criptomoneda River USDT.
+        Comparto información, estrategias y explicaciones claras para que puedas
+        entender mejor el mercado y tomar decisiones informadas.
+    </p>
+
+    <h2>Datos actualizados</h2>
+    <div id="tabla">
+        Cargando datos...
+    </div>
+</div>
+
+<script>
+function toggleMenu() {
+    document.getElementById("sidebar").classList.toggle("active");
+}
+
+const sheetID = "1XCCSri-zL9FQ-9BBaMTS83aFQMreEdlrYJUZ1-K6GJE";
+const url = `https://opensheet.elk.sh/${sheetID}/Hoja1`;
+
+function cargarDatos() {
+    fetch(url)
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("tabla").innerHTML =
+            data.map(fila => 
+                `<div class="fila">
+                    <strong>${Object.values(fila)[0]}</strong> - ${Object.values(fila)[1]}
+                </div>`
+            ).join("");
+    })
+    .catch(() => {
+        document.getElementById("tabla").innerHTML = "Error al cargar la planilla.";
+    });
+}
+
+cargarDatos();
+setInterval(cargarDatos, 30000);
+</script>
+
+</body>
+  </html>
